@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan TPA by Nashadi</title>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header id="app-header">
+        <div class="header-inner">
+            <div class="brand">WEB<span> by</span> Agus Nashadiputra</div>
+            <div id="timer-display" class="timer-box hidden">180:00</div>
+            <div class="header-actions">
+                <button class="icon-btn" id="btn-sound" title="Suara">🔊 Suara</button>
+                <button class="icon-btn" id="btn-fullscreen" title="Fullscreen">⛶ Fullscreen</button>
+                <button class="icon-btn hidden" id="btn-reset" title="Reset Tes">↺ Reset</button>
+            </div>
+        </div>
+        <div class="progress-wrap hidden" id="progress-wrap">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- START SCREEN -->
+        <div id="screen-start">
+            <div class="start-card">
+                <h1>Latihan Soal TPA</h1>
+                <p>Simulasi Tes Potensi Akademik dengan 240 soal mencakup 4 kategori utama: Verbal, Numerik, Figural,
+                    dan Penalaran Logis. Waktu pengerjaan total 180 menit. Progres Anda akan tersimpan otomatis.</p>
+                <div class="category-grid">
+                    <div class="cat-box">
+                        <h3>Verbal — 60 Soal</h3>
+                        <p>Sinonim, antonim, analogi, pemahaman bacaan, hubungan kata, makna istilah.</p>
+                    </div>
+                    <div class="cat-box">
+                        <h3>Numerik — 60 Soal</h3>
+                        <p>Deret angka, aritmetika, persentase, perbandingan, kecepatan/jarak/waktu, aljabar, logika
+                            angka.</p>
+                    </div>
+                    <div class="cat-box">
+                        <h3>Figural — 60 Soal</h3>
+                        <p>Pola gambar, rotasi, cermin, matriks gambar, bentuk hilang, hubungan visual.</p>
+                    </div>
+                    <div class="cat-box">
+                        <h3>Penalaran Logis — 60 Soal</h3>
+                        <p>Silogisme, deduktif, induktif, sebab akibat, pernyataan-kesimpulan, analisis argumen.</p>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn-primary" id="btn-start">Mulai Tes Baru</button>
+                    <button class="btn-secondary hidden" id="btn-resume">Lanjutkan Tes</button>
+                </div>
+                <div id="history-section" style="margin-top:28px; text-align:left;"></div>
+            </div>
+        </div>
+
+        <!-- TEST SCREEN -->
+        <div id="screen-test" class="hidden">
+            <div class="layout">
+                <div class="main-col">
+                    <div class="q-card" id="q-card"></div>
+                </div>
+                <div class="side-col">
+                    <div class="side-card">
+                        <h3>Navigasi Soal</h3>
+                        <div class="legend">
+                            <span><i class="dot gray"></i>Belum</span>
+                            <span><i class="dot green"></i>Terjawab</span>
+                            <span><i class="dot yellow"></i>Ditandai</span>
+                            <span><i class="dot blue"></i>Aktif</span>
+                        </div>
+                        <div id="nav-container"></div>
+                        <div class="jump-box">
+                            <input type="number" id="jump-input" min="1" max="240" placeholder="No. soal (1-240)">
+                            <button id="btn-jump">Lompat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="screen-result" class="hidden"></div>
+
+    </div>
+
+    <script>
+        /* =========================================================
+           AUDIO
+        ========================================================= */
+        let soundOn = localStorage.getItem('tpa_sound') !== 'off';
+        function beep(freq = 600, dur = 0.08) {
+            if (!soundOn) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.type = 'sine'; osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+                osc.start(); osc.stop(ctx.currentTime + dur);
+            } catch (e) { }
+        }
+    </script>
+    <script src="question.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
